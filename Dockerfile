@@ -25,4 +25,3 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 ENV NCODR_HOME="/NCodR" 
 WORKDIR /WORK
 ENTRYPOINT ["/NCodR/NCodR.py"]
- 
