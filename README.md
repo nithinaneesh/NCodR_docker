@@ -1,56 +1,55 @@
 # NCodR
 Non-coding RNAs (ncRNA) are major players in the regulation of gene expression. However, the identification and classification of ncRNAs are major bottlenecks in understanding their functional roles. This study analyses seven classes of ncRNAs in plants using sequence and secondary structure-based RNA folding measures. Support vector machines employing radial basis function show the highest accuracy in discriminating ncRNAs, and the classifier is implemented as  NCodR. This study will provide a reliable platform for the genome-wide prediction and classification of ncRNAs in plants and enrich our understanding of plant ncRNAs, which may be further used for crop improvements using genome-editing technology.
 
-The repository contains the source code for the automated classification of non-coding RNAs in plants. NcodR can be used in three different ways:
+The repository contains the source code for the docker image for automated classification of non-coding RNAs in plants.
 
-1.  Installing NCodR locally from the source code
-2. Using the pre-packaged docker image.
-3. Using the webserver.
+# Using the precompiled docker container
 
-## 1. Installing NCodR locally from the source code
+The docker image with all the requirements preinstalled and all the programs precompiled is available at the following dockerhub URL:
+https://hub.docker.com/r/nithinaneesh/ncodr/
 
-The prerequisites to intall NCodR  are listed below.  The instructions below in this section are tested on Ubuntu 20.04 and WSL 1 and 2 on Windows 10. 
-### 1.1 Prerequesites and Dependencies
-
-#### 1.1.1  Python 3
-
-NCodR uses scripts written in python language. On Ubuntu or ubuntu based Linux systems,  the python interpretor can be installed by using the following command:
+The image can be pulled from the dockerhub using the following command:
 
 ```bash
-sudo apt install python3
+docker pull nithinaneesh/ncodr
 ```
-
-#### 1.1.2 The pip module
-
-The pip module is needed for the installation of other modules such as argparse used in the NCodR program. It can be installed using the following command: 
+The docker image can be used with input fasta file in the present working directory using the following the command:
 
 ```bash
-sudo apt install python3-pip
+docker run -v $(pwd):/WORK -u $(id -u ${USER}):$(id -g ${USER}) ncodr  <input file>
 ```
 
-#### 1.1.3. g++  (with  C++ Standard Template Library C++17/C++20)
+All the arguments for NCodR.py as listed in 1.4.1 are accepted by the docker image. The following arguments are available with the program:
 
-Three of the programs available in this repository are written in C++. A compiler with STL 17 or 20 support is needed for compiling the programs from the source. The compiler and the other dependencies can be installed using the following command:
+```
+        positional arguments:
+          input                 Input file name [RNA sequences in fasta format].
+
+        optional arguments:
+          -h, --help            show this help message and exit
+          -r, --redundant       remove redundant sequence [default = OFF]
+          -c, --clean           clean the intermediate files [default = ON]
+          -o OUTPUT, --output OUTPUT
+                                Output file name [<input>.ncodr if not provided]
+
+```
+
+If the docker program is not installed already, it can be insatlled and setup using the following set of commands:
 
 ```bash
-sudo apt install build-essential
+sudo apt install docker.io
 ```
 
-#### 1.1.4. Java 
-
-The javac compiler is needed for running the repeats program available in the repository. It can be installed by the following command.
+If the docker program shows permisison errors while running the pull command, the following commands may be helpful to resolve the situation.
 
 ```bash
-sudo apt install default-jdk
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "$HOME/.docker" -R
+sudo systemctl restart docker
 ```
-
-#### 1.1.5. Perl
-
-The perl interpretor is required for both genRNAstats.pl and ViennaRNA package. The perl interpretor is installed already along with the build-essential package in step 1.1.3
-
-#### 1.1.6. Argparse (python library)
-
-The python module argparse is requred for the python programs available in the NCodR package. The module can be installed by the followung command:
+ requred for the python programs available in the NCodR package. The module can be installed by the followung command:
 
 ```bash
 sudo python3 -m pip install argparse

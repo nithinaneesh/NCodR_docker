@@ -17,7 +17,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && rm -rf /ViennaRNA \
     && apt clean \
     && apt autoremove \
-    && make
+    && make \
+    && cd /NCodR/model/ \
+    && tar -xvf tsvm.model.tar.gz \
+    && rm tsvm.model.tar.gz
 
 ENV NCODR_HOME="/NCodR" 
 WORKDIR /WORK
